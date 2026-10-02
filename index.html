@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interactivo - UD2 Etiquetas Básicas de HTML y Formularios</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .code-block {
+            font-family: 'Fira Code', monospace;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Header Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
+                    <i class="fa-brands fa-html5 text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Quiz de HTML5 y Formularios</h1>
+                    <p class="text-xs text-slate-500">Unidad Docente 2: Etiquetas Básicas, Sintaxis y Formularios</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button id="themeToggleBtn" type="button" class="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors" title="Cambiar modo">
+                    <i class="fa-solid fa-moon text-lg" id="themeIcon"></i>
+                </button>
+                <div class="hidden sm:flex items-center space-x-1 text-xs font-semibold px-3 py-1.5 bg-orange-50 text-orange-700 border border-orange-200 rounded-full">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>W3C Standard</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        
+        <!-- START SCREEN -->
+        <div id="startScreen" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 text-center animate-fade-in">
+            <div class="w-20 h-20 bg-orange-100 text-orange-600 rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-inner">
+                <i class="fa-solid fa-code text-4xl"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">Evaluación Interactiva de HTML5</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+                Pon a prueba tus conocimientos sobre estructura de documentos, orden de anidamiento, etiquetas semánticas, tablas, elementos de bloque/línea y control de formularios según los estándares oficiales W3C.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto mb-8 text-left">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start space-x-3">
+                    <i class="fa-solid fa-list-check text-brand-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">20 Preguntas</h3>
+                        <p class="text-xs text-slate-500">Teoría y análisis de código</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start space-x-3">
+                    <i class="fa-solid fa-bolt text-amber-500 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">Feedback Directo</h3>
+                        <p class="text-xs text-slate-500">Explicación instantánea</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start space-x-3">
+                    <i class="fa-solid fa-trophy text-emerald-500 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">Calificación</h3>
+                        <p class="text-xs text-slate-500">Evaluación detallada al final</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Category Selector -->
+            <div class="mb-8">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Filtrar Cuestionario:</label>
+                <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+                    <button type="button" id="modeAll" class="px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all">Todas (20)</button>
+                    <button type="button" id="modeTheory" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-800 transition-all">Solo Teoría</button>
+                    <button type="button" id="modeCode" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-800 transition-all">Análisis de Código</button>
+                </div>
+            </div>
+
+            <button type="button" id="startBtn" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all text-base flex items-center justify-center space-x-2 mx-auto">
+                <span>Comenzar el Cuestionario</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- QUIZ ACTIVE SCREEN -->
+        <div id="quizScreen" class="hidden space-y-6 animate-fade-in">
+            <!-- Progress Bar & Stats Header -->
+            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                <div class="flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600 mb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-1 bg-orange-100 text-orange-800 rounded-md text-xs font-bold" id="questionCounter">Pregunta 1 de 20</span>
+                        <span id="questionTypeBadge" class="hidden sm:inline-block px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs">Teoría</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-emerald-600 flex items-center space-x-1"><i class="fa-solid fa-circle-check"></i> <span id="scoreCorrect">0</span></span>
+                        <span class="text-rose-600 flex items-center space-x-1"><i class="fa-solid fa-circle-xmark"></i> <span id="scoreIncorrect">0</span></span>
+                    </div>
+                </div>
+                <!-- Progress bar track -->
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-gradient-to-r from-orange-500 to-amber-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-8 shadow-xl shadow-slate-200/50">
+                <h2 id="questionText" class="text-lg sm:text-xl font-bold text-slate-900 mb-4 leading-snug">
+                    <!-- Text inserted dynamically -->
+                </h2>
+
+                <!-- Code Container -->
+                <div id="codeSnippetContainer" class="hidden mb-5">
+                    <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-md">
+                        <div class="bg-slate-800 px-4 py-1.5 flex items-center justify-between text-xs text-slate-400 font-mono border-b border-slate-700/50">
+                            <span class="flex items-center space-x-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <span class="ml-2">codigo.html</span>
+                            </span>
+                            <span>HTML5</span>
+                        </div>
+                        <pre class="p-4 text-xs sm:text-sm text-slate-200 code-block overflow-x-auto custom-scrollbar"><code id="codeSnippetText"></code></pre>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="optionsContainer" class="space-y-3 mb-6">
+                    <!-- Dynamic Options -->
+                </div>
+
+                <!-- Explanation / Feedback Box -->
+                <div id="explanationContainer" class="hidden p-4 rounded-xl border text-sm animate-fade-in">
+                    <div class="flex items-start space-x-3">
+                        <i id="explanationIcon" class="text-xl mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <h4 id="explanationTitle" class="font-bold mb-1">Explicación Técnica:</h4>
+                            <p id="explanationText" class="text-slate-700 leading-relaxed text-xs sm:text-sm"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="flex justify-between items-center">
+                <button type="button" id="prevBtn" class="px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    <i class="fa-solid fa-arrow-left mr-1.5"></i> Anterior
+                </button>
+                <button type="button" id="nextBtn" disabled class="px-6 py-2.5 text-xs sm:text-sm font-bold text-white bg-brand-600 rounded-xl shadow-md hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center">
+                    <span>Siguiente</span> <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="resultsScreen" class="hidden bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 animate-fade-in">
+            <div class="text-center max-w-lg mx-auto mb-8">
+                <div id="scoreBadgeIcon" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 shadow-lg">
+                    <!-- Dynamic Icon -->
+                </div>
+                <h2 id="resultGrade" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1">¡Sobresaliente!</h2>
+                <p id="resultSubtext" class="text-slate-500 text-sm sm:text-base">Has completado con éxito la evaluación de HTML5.</p>
+                
+                <!-- Grade Stats Box -->
+                <div class="grid grid-cols-3 gap-3 my-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="block text-xs text-slate-500 font-semibold uppercase">Aciertos</span>
+                        <span id="finalScoreCorrect" class="text-xl sm:text-2xl font-black text-emerald-600">0</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 font-semibold uppercase">Porcentaje</span>
+                        <span id="finalScorePercent" class="text-xl sm:text-2xl font-black text-brand-600">0%</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-500 font-semibold uppercase">Fallos</span>
+                        <span id="finalScoreIncorrect" class="text-xl sm:text-2xl font-black text-rose-600">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Section Controls -->
+            <div class="border-t border-slate-200 pt-6">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                    <h3 class="font-bold text-slate-800 text-lg">Revisión de Respuestas</h3>
+                    <div class="flex gap-2">
+                        <button type="button" id="filterAllBtn" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-white">Todas</button>
+                        <button type="button" id="filterFailedBtn" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">Solo Falladas</button>
+                    </div>
+                </div>
+
+                <!-- Review Items Container -->
+                <div id="reviewContainer" class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Dynamic Review Cards -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <button type="button" id="restartBtn" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Reiniciar Cuestionario</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <div class="max-w-5xl mx-auto px-4">
+            <p>Desarrollado para aprendizaje interactivo de Desarrollo Web en Entorno Cliente y Servidor.</p>
+            <p class="mt-1 text-slate-400">UD2: Etiquetas Básicas de HTML y Formularios | Estándar W3C</p>
+        </div>
+    </footer>
+
+    <script>
+        // QUESTION DATASET
+        const quizQuestions = [
+            {
+                id: 1,
+                category: "theory",
+                question: "¿Qué es HTML y cuál es la función principal del Consorcio W3C (World Wide Web Consortium)?",
+                options: [
+                    "HTML es un lenguaje de programación para bases de datos y el W3C vende licencias de software.",
+                    "HTML es el lenguaje de marcado estándar para la Web, y el W3C es el organismo que define y mantiene sus estándares y especificaciones.",
+                    "HTML es un compilador gráfico y el W3C se encarga únicamente de regular el registro de dominios .com.",
+                    "HTML es un protocolo de red cliente-servidor y el W3C supervisa la velocidad de Internet global."
+                ],
+                correct: 1,
+                explanation: "HTML (HyperText Markup Language) es un lenguaje de marcado. El W3C es el consorcio internacional neutro que establece recomendaciones y estándares técnicos para garantizar el crecimiento y compatibilidad de la Web."
+            },
+            {
+                id: 2,
+                category: "theory",
+                question: "¿Cómo procesa un navegador web estándar los espacios en blanco, tabulaciones e intros continuos en un documento HTML?",
+                options: [
+                    "Conserva exactamente todos los saltos de línea y tabulaciones tal como se escribieron en el código fuente.",
+                    "Lanza un error de compilación si encuentra más de dos espacios seguidos.",
+                    "Comprime múltiples espacios, saltos de línea o tabulaciones consecutivas en un solo espacio en blanco visual (salvo dentro de <pre>).",
+                    "Elimina por completo todas las palabras que estén separadas por más de un espacio."
+                ],
+                correct: 2,
+                explanation: "Por defecto, los navegadores ignoran la acumulación de espacios en blanco, intros y tabulaciones, colapsándolos en un único espacio en blanco. La única excepción directa es la etiqueta de texto preformateado <pre>."
+            },
+            {
+                id: 3,
+                category: "theory",
+                question: "Para mostrar correctamente caracteres especiales en español como la 'ñ', vocales con tilde 'á', o los símbolos '<' y '>', ¿cuál es la práctica recomendada?",
+                options: [
+                    "Configurar <meta charset=\"utf-8\"> y emplear entidades HTML como &ntilde;, &aacute;, &lt; cuando sea preciso.",
+                    "Usar exclusivamente la codificación ASCII-US de 7 bits sin usar etiquetas de metadatos.",
+                    "Escribir todo el documento en mayúsculas para evitar problemas de acentuación.",
+                    "Guardar el archivo de código únicamente con formato PDF."
+                ],
+                correct: 0,
+                explanation: "UTF-8 es el estándar universal de codificación. Para evitar conflictos de marcado con caracteres especiales como '<', se usan entidades HTML como &lt; y &ntilde;."
+            },
+            {
+                id: 4,
+                category: "theory",
+                question: "¿Cuál de los siguientes esquemas de carpetas y nombres de archivo sigue las buenas prácticas recomendadas de desarrollo web?",
+                options: [
+                    "Carpeta principal con archivos llamados: Mi Pagina Web.HTML, Foto Principal.PNG, Estilos Finales.CSS",
+                    "Carpeta raíz con index.html y subcarpetas en minúsculas sin espacios/acentos: css/, js/, images/",
+                    "Guardar todos los scripts y fotos dentro de la carpeta C:\\Windows\\System32",
+                    "Denominar a la página de inicio obligatoriamente home.php.txt dentro de una carpeta con espacios."
+                ],
+                correct: 1,
+                explanation: "Es norma básica usar minúsculas, evitar espacios (usar guiones), omitir tildes/caracteres especiales en nombres de archivos y mantener la página inicial como index.html con subcarpetas organizativas (css, js, images)."
+            },
+            {
+                id: 5,
+                category: "code",
+                question: "Analiza las siguientes etiquetas <meta> situadas en el <head>. ¿Qué función cumple la opción correcta?",
+                code: `<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<meta name="robots" content="index, follow">`,
+                options: [
+                    "La primera define el estilo visual, la segunda la base de datos y la tercera oculta la página en Google.",
+                    "Establecen respectivamente: codificación UTF-8, adaptación responsiva en dispositivos móviles y permiso a buscadores para indexar y seguir enlaces.",
+                    "Las tres sirven únicamente para cambiar el color de fondo de la aplicación web.",
+                    "Sirven para ejecutar JavaScript antes de cargar el cuerpo <body>."
+                ],
+                correct: 1,
+                explanation: "charset=\"utf-8\" configura la codificación de caracteres, viewport asegura que el ancho visible coincida con el dispositivo y robots=\"index, follow\" indica a los motores de búsqueda que pueden indexar la página."
+            },
+            {
+                id: 6,
+                category: "theory",
+                question: "¿Cuál es la diferencia fundamental entre los atributos universales id y class?",
+                options: [
+                    "id se usa exclusivamente en tablas y class solo en formularios.",
+                    "id debe ser único e irrepetible en un mismo documento, mientras que class permite agrupar múltiples elementos con el mismo estilo/comportamiento.",
+                    "id permite repeticiones en múltiples elementos y class solo se puede usar una vez por documento.",
+                    "No existe ninguna diferencia; son exactamente sinónimos sustituibles en cualquier contexto."
+                ],
+                correct: 1,
+                explanation: "El atributo id asigna un identificador único a un elemento individual dentro del DOM HTML. Por el contrario, class permite asociar un mismo nombre de clase a múltiples elementos."
+            },
+            {
+                id: 7,
+                category: "theory",
+                question: "¿Cuál es la distinción principal de comportamiento entre los elementos 'en bloque' (block) y 'en línea' (inline)?",
+                options: [
+                    "Los elementos en línea siempre ocupan todo el ancho de la pantalla y provocan un salto de línea.",
+                    "Los elementos en bloque ocupan solo el espacio estrictamente necesario para su contenido sin saltos de línea.",
+                    "Los elementos en bloque comienzan en una nueva línea y ocupan todo el ancho disponible; los elementos en línea ocupan solo el ancho de su contenido y no fuerzan un salto de línea.",
+                    "Los elementos en línea no admiten texto en su interior, únicamente imágenes."
+                ],
+                correct: 2,
+                explanation: "Los elementos de bloque (<div>, <p>, <h1>) generan un salto de línea automático y abarcan el 100% del ancho del contenedor. Los elementos en línea (<span>, <a>, <strong>) fluyen dentro de la línea de texto actual."
+            },
+            {
+                id: 8,
+                category: "code",
+                question: "Examina la regla de anidamiento en el siguiente código HTML. ¿Por qué se considera INCORRECTO según el estándar?",
+                code: `<p>Bienvenido <strong>al curso <em>interactivo</strong> de HTML</em> avanzado</p>`,
+                options: [
+                    "La etiqueta <p> no puede contener texto normal.",
+                    "La etiqueta <em> se abrió DENTRO de <strong>, por lo que <em> debe cerrarse ANTES de cerrar <strong> (regla LIFO).",
+                    "Está prohibido usar más de dos etiquetas dentro de un párrafo.",
+                    "Falta colocar un punto y coma al final de la etiqueta <em>."
+                ],
+                correct: 1,
+                explanation: "La regla de anidamiento exige que las etiquetas se cierren en orden inverso a su apertura (estructura LIFO). Como <em> se abrió después de <strong>, debe cerrarse </em> antes del cierre </strong>."
+            },
+            {
+                id: 9,
+                category: "code",
+                question: "Dado el siguiente código con etiquetas de encabezado, ¿cuál es la recomendación semántica correcta?",
+                code: `<h1>Título Principal de la Web</h1>\n<h4>Sección Secundaria</h4>\n<h1>Otro Título Principal</h1>`,
+                options: [
+                    "Es un código totalmente perfecto que cumple a rajatabla todas las guías de SEO.",
+                    "Los encabezados deben mantener una jerarquía lógica sin saltar niveles (ej. de <h1> a <h2>), y normalmente debe haber un único <h1> principal por documento.",
+                    "Debe cambiarse <h1> por <header> obligatoriamente en todos los casos.",
+                    "Solo se pueden usar encabezados <h6> si la página contiene más de tres líneas."
+                ],
+                correct: 1,
+                explanation: "Se debe seguir un orden jerárquico (<h1> -> <h2> -> <h3>) sin dar saltos bruscos a <h4> y reservando <h1> para la idea clave o título principal del documento."
+            },
+            {
+                id: 10,
+                category: "code",
+                question: "¿Qué estructura de lista imprimirá en pantalla una lista de términos con sus respectivas definiciones?",
+                code: `<dl>\n  <dt>HTML</dt>\n  <dd>Lenguaje de Marcas de Hipertexto</dd>\n  <dt>CSS</dt>\n  <dd>Hojas de Estilo en Cascada</dd>\n</dl>`,
+                options: [
+                    "Una lista ordenada numerada con 1 y 2.",
+                    "Una lista con viñetas circulares por defecto.",
+                    "Una lista de definición (Definition List) donde <dt> representa el término y <dd> su descripción o definición.",
+                    "Un formulario desplegable para seleccionar términos."
+                ],
+                correct: 2,
+                explanation: "<dl> crea una lista de definiciones. Contiene etiquetas <dt> (definition term) para el concepto y <dd> (definition description) para la explicación asociada."
+            },
+            {
+                id: 11,
+                category: "code",
+                question: "Analiza este fragmento de tabla HTML. ¿Qué efecto provocan los atributos colspan y rowspan?",
+                code: `<table>\n  <tr>\n    <td colspan="2">Censo 2026</td>\n  </tr>\n  <tr>\n    <td rowspan="2">Región A</td>\n    <td>100 hab</td>\n  </tr>\n  <tr>\n    <td>150 hab</td>\n  </tr>\n</table>`,
+                options: [
+                    "colspan=\"2\" fusiona 2 filas verticalmente y rowspan=\"2\" junta 2 columnas en horizontal.",
+                    "colspan=\"2\" hace que la celda abarque 2 columnas horizontalmente; rowspan=\"2\" expande la celda verticalmente a lo largo de 2 filas.",
+                    "Ambos atributos sirven para definir el color de fondo de la tabla.",
+                    "Hacen que la celda se vuelva invisible en navegadores móviles."
+                ],
+                correct: 1,
+                explanation: "colspan expande una celda uniendo múltiples columnas horizontalmente. rowspan la extiende verticalmente abarcando varias filas."
+            },
+            {
+                id: 12,
+                category: "theory",
+                question: "¿Qué ocurre al pulsar un enlace configurado como <a href=\"https://ejemplo.com\" target=\"_blank\">?",
+                options: [
+                    "Abre la página web especificada dentro de la misma pestaña activa sustituyendo la actual.",
+                    "Abre el sitio web https://ejemplo.com en una NUEVA pestaña o ventana del navegador.",
+                    "Descarga automáticamente un archivo ZIP a la carpeta personal del usuario.",
+                    "Muestra un mensaje de alerta bloqueando la navegación."
+                ],
+                correct: 1,
+                explanation: "El atributo target=\"_blank\" ordena al navegador abrir el enlace en un nuevo marco o pestaña independiente."
+            },
+            {
+                id: 13,
+                category: "code",
+                question: "Observa la etiqueta de imagen. ¿Por qué es IMPRESCINDIBLE el atributo alt?",
+                code: `<img src="images/logo.png" alt="Logotipo Oficial de la Empresa" width="200" height="100">`,
+                options: [
+                    "Es el atributo que determina el color primario del borde de la foto.",
+                    "Es opcional y solo sirve para acelerar la velocidad de carga de la fibra óptica.",
+                    "Proporciona un texto alternativo accesible para lectores de pantalla (discapacidad visual) y se muestra si la imagen no carga.",
+                    "Indica al navegador la clave de cifrado de la imagen."
+                ],
+                correct: 2,
+                explanation: "El atributo alt es vital para la accesibilidad web (WCAG), permitiendo a personas con discapacidad visual comprender la imagen mediante lectores de pantalla."
+            },
+            {
+                id: 14,
+                category: "theory",
+                question: "¿Cuál es la diferencia primordial entre enviar un formulario HTML usando method=\"GET\" versus method=\"POST\"?",
+                options: [
+                    "GET envía los datos ocultos en el cuerpo de la petición HTTP; POST los adjunta visibles en la barra de direcciones (URL).",
+                    "GET adjunta los datos en la URL en forma de variables (visibles e inseguros para contraseñas); POST los envía de forma no visible en el cuerpo (body) de la petición HTTP.",
+                    "GET solo funciona en ordenadores Mac y POST solo en sistemas Windows.",
+                    "No hay ninguna diferencia; ambos métodos permiten enviar archivos adjuntos gigantescos sin límite."
+                ],
+                correct: 1,
+                explanation: "GET concatena los datos en la URL (?clave=valor), lo cual es inseguro para contraseñas y tiene límite de longitud. POST envía la información empaquetada en el cuerpo del mensaje HTTP."
+            },
+            {
+                id: 15,
+                category: "code",
+                question: "Analiza el siguiente fragmento de formulario. ¿Por qué es fundamental la vinculación entre <label for=\"...\"> e <input id=\"...\">?",
+                code: `<label for="emailUser">Correo Electrónico:</label>\n<input type="email" id="emailUser" name="correo">`,
+                options: [
+                    "Permite que al hacer clic en el texto de la etiqueta, el foco de edición se active automáticamente dentro de la caja de texto, mejorando usabilidad y accesibilidad.",
+                    "Es la única forma de que la caja de texto cambie de color a verde.",
+                    "Sirve únicamente para enviar una copia del correo al servidor de Google.",
+                    "Obliga al usuario a escribir en mayúsculas."
+                ],
+                correct: 0,
+                explanation: "El atributo 'for' del label debe coincidir con el 'id' del input para vincular ambos elementos en la interfaz de usuario."
+            },
+            {
+                id: 16,
+                category: "code",
+                question: "En un cuestionario donde el usuario solo deba seleccionar UNA opción de entre varias, ¿qué control es el adecuado?",
+                code: `<input type="radio" name="estudios" value="1"> ESO\n<input type="radio" name="estudios" value="2"> Bachillerato`,
+                options: [
+                    "Inputs de tipo checkbox con distintos nombres.",
+                    "Inputs de tipo radio compartiendo exactamente el MISMO atributo name para formar un grupo de exclusión mutua.",
+                    "Inputs de tipo button con la propiedad autofocus.",
+                    "Campos <textarea> separados por comas."
+                ],
+                correct: 1,
+                explanation: "Los botones de radio (type=\"radio\") son de selección exclusiva cuando comparten exactamente el mismo atributo 'name'."
+            },
+            {
+                id: 17,
+                category: "code",
+                question: "¿Qué elementos permiten agrupar visual y semánticamente campos relacionados dentro de un formulario extenso?",
+                code: `<fieldset>\n  <legend>Datos Personales</legend>\n  <!-- campos aquí -->\n</fieldset>`,
+                options: [
+                    "Las etiquetas <group> y <title>.",
+                    "Las etiquetas <fieldset> para enmarcar el grupo y <legend> para dar título al borde de dicho marco.",
+                    "Las etiquetas <table> y <caption> dentro de una lista.",
+                    "El elemento <section> combinado con <article>."
+                ],
+                correct: 1,
+                explanation: "<fieldset> dibuja un marco alrededor de los controles relacionados y <legend> define el título incrustado en el borde."
+            },
+            {
+                id: 18,
+                category: "code",
+                question: "Analiza el siguiente código con elementos semánticos de HTML5. ¿Cuál es su estructura correcta?",
+                code: `<header>...</header>\n<nav>...</nav>\n<main>\n  <article>...</article>\n  <aside>...</aside>\n</main>\n<footer>...</footer>`,
+                options: [
+                    "Es incorrecto porque <aside> no puede estar en el documento.",
+                    "Es una estructura semántica válida de HTML5: cabecera, menú de navegación, contenido principal con un artículo y barra lateral, finalizando con el pie de página.",
+                    "El elemento <main> debe repetirse al menos 5 veces por documento.",
+                    "Las etiquetas de HTML5 están en desuso y deben sustituirse por <table>."
+                ],
+                correct: 1,
+                explanation: "HTML5 introduce etiquetas semánticas claras: <header> para cabecera, <nav> para menú, <main> para contenido central, <article> para bloques independientes, <aside> para secundarios y <footer> para el pie."
+            },
+            {
+                id: 19,
+                category: "code",
+                question: "¿Qué resultado interactivo ofrece la combinación de etiquetas <details> y <summary> sin necesidad de JavaScript?",
+                code: `<details>\n  <summary>Ver más información</summary>\n  <p>Este es el texto desplegable oculto por defecto.</p>\n</details>`,
+                options: [
+                    "Muestra un mensaje desplegable nativo tipo 'acordeón' que se abre/cierra al hacer clic en el texto del <summary>.",
+                    "Abre una ventana emergente bloqueante que requiere contraseña.",
+                    "Imprime de forma permanente el párrafo en color rojo brillante.",
+                    "Envía un correo electrónico con los detalles del usuario."
+                ],
+                correct: 0,
+                explanation: "<details> crea un contenedor desplegable nativo. El texto en <summary> actúa como la cabecera interactiva."
+            },
+            {
+                id: 20,
+                category: "theory",
+                question: "¿Cuál es la función del elemento <select> combinado con etiquetas <option> en un formulario?",
+                options: [
+                    "Crear un botón desplegable de envío directo al servidor.",
+                    "Crear un menú desplegable (drop-down list) de opciones donde el usuario selecciona elementos.",
+                    "Generar una tabla dinámica editable para hojas de cálculo.",
+                    "Insertar un reproductor de audio y vídeo."
+                ],
+                correct: 1,
+                explanation: "La etiqueta <select> define un menú desplegable, mientras que cada <option> representa un ítem seleccionable."
+            }
+        ];
+
+        // GLOBAL APP STATE
+        let activeQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizFilteredMode = 'all';
+
+        // UTILITY FUNCTIONS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // DARK MODE TOGGLE
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('themeIcon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-amber-400 text-lg';
+            } else {
+                icon.className = 'fa-solid fa-moon text-slate-600 text-lg';
+            }
+        }
+
+        // QUIZ MODE FILTERING
+        function setQuizMode(mode) {
+            quizFilteredMode = mode;
+            const btnAll = document.getElementById('modeAll');
+            const btnTheory = document.getElementById('modeTheory');
+            const btnCode = document.getElementById('modeCode');
+
+            [btnAll, btnTheory, btnCode].forEach(b => {
+                b.className = "px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:text-slate-800 transition-all";
+            });
+
+            if (mode === 'all') {
+                btnAll.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all";
+            } else if (mode === 'theory') {
+                btnTheory.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all";
+            } else if (mode === 'code') {
+                btnCode.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all";
+            }
+        }
+
+        // START QUIZ
+        function startQuiz() {
+            if (quizFilteredMode === 'theory') {
+                activeQuestions = quizQuestions.filter(q => q.category === 'theory');
+            } else if (quizFilteredMode === 'code') {
+                activeQuestions = quizQuestions.filter(q => q.category === 'code');
+            } else {
+                activeQuestions = [...quizQuestions];
+            }
+
+            // Shuffle active questions
+            activeQuestions = activeQuestions.sort(() => Math.random() - 0.5);
+
+            currentQuestionIndex = 0;
+            userAnswers = new Array(activeQuestions.length).fill(null);
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        // RENDER CURRENT QUESTION
+        function renderQuestion() {
+            const q = activeQuestions[currentQuestionIndex];
+            
+            // Header stats
+            document.getElementById('questionCounter').innerText = `Pregunta ${currentQuestionIndex + 1} de ${activeQuestions.length}`;
+            const badge = document.getElementById('questionTypeBadge');
+            if (q.category === 'code') {
+                badge.innerText = 'Análisis de Código';
+                badge.className = 'px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs font-semibold';
+            } else {
+                badge.innerText = 'Concepto Teórico';
+                badge.className = 'px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-semibold';
+            }
+
+            // Progress Bar
+            const progressPct = ((currentQuestionIndex) / activeQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progressPct}%`;
+
+            updateLiveScore();
+
+            // Question Text
+            document.getElementById('questionText').innerText = q.question;
+
+            // Code Box
+            const codeBox = document.getElementById('codeSnippetContainer');
+            if (q.code) {
+                document.getElementById('codeSnippetText').innerText = q.code;
+                codeBox.classList.remove('hidden');
+            } else {
+                codeBox.classList.add('hidden');
+            }
+
+            // Options List
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            const hasAnswered = userAnswers[currentQuestionIndex] !== null;
+            const selectedIdx = userAnswers[currentQuestionIndex];
+            const optionLetters = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                
+                let baseClasses = 'w-full text-left p-4 rounded-xl border text-sm sm:text-base font-medium transition-all flex items-start space-x-3 ';
+
+                if (hasAnswered) {
+                    btn.disabled = true;
+                    if (idx === q.correct) {
+                        baseClasses += 'bg-emerald-50 border-emerald-500 text-emerald-900 ring-2 ring-emerald-500/20';
+                    } else if (idx === selectedIdx && selectedIdx !== q.correct) {
+                        baseClasses += 'bg-rose-50 border-rose-400 text-rose-900 ring-2 ring-rose-500/20';
+                    } else {
+                        baseClasses += 'bg-slate-50/50 border-slate-200 text-slate-400 opacity-60';
+                    }
+                } else {
+                    baseClasses += 'bg-white border-slate-200 text-slate-700 hover:border-brand-500 hover:bg-brand-50/30 active:scale-[0.99] shadow-sm';
+                    btn.addEventListener('click', () => selectOption(idx));
+                }
+
+                btn.className = baseClasses;
+
+                let letterBadgeClass = 'bg-slate-100 text-slate-600 border border-slate-200';
+                if (hasAnswered) {
+                    if (idx === q.correct) letterBadgeClass = 'bg-emerald-600 text-white';
+                    else if (idx === selectedIdx) letterBadgeClass = 'bg-rose-600 text-white';
+                }
+
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5 ${letterBadgeClass}">
+                        ${optionLetters[idx]}
+                    </span>
+                    <span class="leading-relaxed flex-grow">${escapeHtml(optText)}</span>
+                `;
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Feedback / Explanation Box
+            const explanationBox = document.getElementById('explanationContainer');
+            if (hasAnswered) {
+                explanationBox.classList.remove('hidden');
+                const isRight = selectedIdx === q.correct;
+                
+                if (isRight) {
+                    explanationBox.className = 'p-4 rounded-xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 animate-fade-in';
+                    document.getElementById('explanationIcon').className = 'fa-solid fa-circle-check text-emerald-600 text-xl';
+                    document.getElementById('explanationTitle').innerText = '¡Respuesta Correcta!';
+                } else {
+                    explanationBox.className = 'p-4 rounded-xl border border-rose-200 bg-rose-50/80 text-rose-900 animate-fade-in';
+                    document.getElementById('explanationIcon').className = 'fa-solid fa-circle-xmark text-rose-600 text-xl';
+                    document.getElementById('explanationTitle').innerText = 'Respuesta Incorrecta';
+                }
+                document.getElementById('explanationText').innerText = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Controls State
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.disabled = !hasAnswered;
+
+            if (currentQuestionIndex === activeQuestions.length - 1) {
+                nextBtn.innerHTML = `<span>Ver Resultados</span> <i class="fa-solid fa-trophy ml-1.5"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Siguiente</span> <i class="fa-solid fa-arrow-right ml-1.5"></i>`;
+            }
+        }
+
+        // SELECT OPTION
+        function selectOption(index) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+            userAnswers[currentQuestionIndex] = index;
+            renderQuestion();
+        }
+
+        // NEXT QUESTION
+        function nextQuestion() {
+            if (currentQuestionIndex < activeQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // PREVIOUS QUESTION
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        // LIVE SCORE COUNTER
+        function updateLiveScore() {
+            let correct = 0;
+            let incorrect = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    if (ans === activeQuestions[idx].correct) correct++;
+                    else incorrect++;
+                }
+            });
+            document.getElementById('scoreCorrect').innerText = correct;
+            document.getElementById('scoreIncorrect').innerText = incorrect;
+        }
+
+        // SHOW RESULTS
+        function showResults() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            let correctCount = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === activeQuestions[idx].correct) correctCount++;
+            });
+
+            const total = activeQuestions.length;
+            const incorrectCount = total - correctCount;
+            const percentage = Math.round((correctCount / total) * 100);
+
+            document.getElementById('finalScoreCorrect').innerText = correctCount;
+            document.getElementById('finalScoreIncorrect').innerText = incorrectCount;
+            document.getElementById('finalScorePercent').innerText = `${percentage}%`;
+
+            const badgeIcon = document.getElementById('scoreBadgeIcon');
+            const resultGrade = document.getElementById('resultGrade');
+            const resultSubtext = document.getElementById('resultSubtext');
+
+            if (percentage >= 90) {
+                resultGrade.innerText = "¡Sobresaliente / Excelente!";
+                resultSubtext.innerText = "Dominas con maestría los estándares HTML y estructura de formularios.";
+                badgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-emerald-100 text-emerald-600 shadow-emerald-200";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-award"></i>`;
+            } else if (percentage >= 70) {
+                resultGrade.innerText = "¡Notable / Buen Trabajo!";
+                resultSubtext.innerText = "Tienes un sólido conocimiento de HTML5 y sus etiquetas clave.";
+                badgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-blue-100 text-blue-600 shadow-blue-200";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-thumbs-up"></i>`;
+            } else if (percentage >= 50) {
+                resultGrade.innerText = "Aprobado (Suficiente)";
+                resultSubtext.innerText = "Has superado la prueba, pero te recomendamos repasar los conceptos con errores.";
+                badgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-amber-100 text-amber-600 shadow-amber-200";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-book-open"></i>`;
+            } else {
+                resultGrade.innerText = "Insuficiente (Requiere Repaso)";
+                resultSubtext.innerText = "Revisa de nuevo la Unidad 2 de HTML y Formularios antes de volver a intentarlo.";
+                badgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-rose-100 text-rose-600 shadow-rose-200";
+                badgeIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+            }
+
+            filterReview('all');
+        }
+
+        // FILTER REVIEW LOGIC
+        function filterReview(filter) {
+            const btnAll = document.getElementById('filterAllBtn');
+            const btnFailed = document.getElementById('filterFailedBtn');
+
+            if (filter === 'failed') {
+                btnFailed.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-white";
+                btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200";
+            } else {
+                btnAll.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-white";
+                btnFailed.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200";
+            }
+
+            renderReviewList(filter);
+        }
+
+        function renderReviewList(filter) {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '';
+
+            activeQuestions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.correct;
+
+                if (filter === 'failed' && isCorrect) return;
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border text-sm transition-all ${
+                    isCorrect ? 'bg-emerald-50/40 border-emerald-200' : 'bg-rose-50/40 border-rose-200'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <span class="font-bold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'} text-xs uppercase tracking-wider">
+                            ${idx + 1}. ${isCorrect ? '<i class="fa-solid fa-circle-check"></i> Correcta' : '<i class="fa-solid fa-circle-xmark"></i> Fallada'}
+                        </span>
+                        <span class="text-xs font-mono text-slate-400">ID #${q.id}</span>
+                    </div>
+                    <p class="font-semibold text-slate-800 mb-2">${escapeHtml(q.question)}</p>
+                    ${q.code ? `<pre class="bg-slate-900 text-slate-200 p-2.5 rounded-lg text-xs font-mono mb-2 overflow-x-auto"><code>${escapeHtml(q.code)}</code></pre>` : ''}
+                    
+                    <div class="space-y-1 text-xs mb-2">
+                        <p class="${isCorrect ? 'text-emerald-700 font-semibold' : 'text-rose-700 font-semibold'}">
+                            Tu respuesta: ${escapeHtml(q.options[userAns])}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Respuesta correcta: ${escapeHtml(q.options[q.correct])}</p>` : ''}
+                    </div>
+
+                    <div class="text-xs text-slate-600 bg-white/80 p-2.5 rounded-lg border border-slate-200/60 leading-relaxed">
+                        <strong>Justificación:</strong> ${escapeHtml(q.explanation)}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            if (container.children.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm"><i class="fa-solid fa-face-smile text-2xl mb-2 block"></i>¡No hay preguntas falladas que mostrar! Excelente trabajo.</div>`;
+            }
+        }
+
+        // RESTART QUIZ
+        function restartQuiz() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        // ATTACH EVENT LISTENERS AFTER DOM LOAD
+        window.addEventListener('DOMContentLoaded', () => {
+            // Dark mode
+            document.getElementById('themeToggleBtn').addEventListener('click', toggleDarkMode);
+
+            // Filter mode buttons
+            document.getElementById('modeAll').addEventListener('click', () => setQuizMode('all'));
+            document.getElementById('modeTheory').addEventListener('click', () => setQuizMode('theory'));
+            document.getElementById('modeCode').addEventListener('click', () => setQuizMode('code'));
+
+            // Start & Navigation buttons
+            document.getElementById('startBtn').addEventListener('click', startQuiz);
+            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+            document.getElementById('prevBtn').addEventListener('click', previousQuestion);
+
+            // Review filter & Restart buttons
+            document.getElementById('filterAllBtn').addEventListener('click', () => filterReview('all'));
+            document.getElementById('filterFailedBtn').addEventListener('click', () => filterReview('failed'));
+            document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+        });
+    </script>
+</body>
+</html>
